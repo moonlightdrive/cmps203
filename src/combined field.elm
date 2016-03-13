@@ -1,6 +1,6 @@
 import Html exposing (..)
-import Html.Attributes exposing (action, attribute, class, for, id, type')
-
+import Html.Attributes exposing (..) 
+--action, attribute, class, for, id, type
 
 -- MODEL
 
@@ -46,21 +46,29 @@ actions =
 
 view : Model -> Html
 view model =
-  div [ class "container" ]
+  div [ class "box" ]
   [ div [ attribute "role" "form" ]
     [ div [ class "form-group" ]
-      [ label [ for "name" ]
-        [ text "name" ]
-      , input [ id "name", type' "text" , class "form-control" ]
+      [ label [ for "Genre" ]
+        [ text "Genre" ]
+      , input [ id "Genre", type' "text" , class "form-control" ]
         []
       ]
     , div [ class "form-group" ]
-      [ label [ for "age" ]
-        [ text "age" ]
-      , input [ id "age", type' "text" , class "form-control" ]
+      [ label [ for "Actor" ]
+        [ text "Actor" ]
+      , input [ id "Actor", type' "text" , class "form-control" ]
+        []
+      ]
+    , div [ class "form-group" ]
+      [ label [ for "Actress" ]
+        [ text "Actress" ]
+      , input [ id "Actress", type' "text" , class "form-control" ]
         []
       ]
     , button [ class "btn btn-default" ]
-      [ text "Submit" ]
+      [ text "Search" ]
     ]
   ]
+  
+  
