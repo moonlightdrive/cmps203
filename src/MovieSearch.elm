@@ -43,7 +43,7 @@ main : Signal Html
 main =
   Signal.map view model
 
-
+--foldp is a signal dependent on the past 
 model : Signal Model
 model = Signal.foldp update init actions.signal
 
