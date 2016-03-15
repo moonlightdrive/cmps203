@@ -1,0 +1,99 @@
+Elm.Movies = Elm.Movies || {};
+Elm.Movies.make = function (_elm) {
+   "use strict";
+   _elm.Movies = _elm.Movies || {};
+   if (_elm.Movies.values) return _elm.Movies.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $Effects = Elm.Effects.make(_elm),
+   $Html = Elm.Html.make(_elm),
+   $Html$Attributes = Elm.Html.Attributes.make(_elm),
+   $Html$Events = Elm.Html.Events.make(_elm),
+   $Http = Elm.Http.make(_elm),
+   $Json$Decode = Elm.Json.Decode.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm),
+   $Task = Elm.Task.make(_elm);
+   var _op = {};
+   var is13 = function (code) {    return _U.eq(code,13) ? $Result.Ok({ctor: "_Tuple0"}) : $Result.Err("not the right key code");};
+   var onEnter = F2(function (address,v) {
+      return A3($Html$Events.on,"keydown",A2($Json$Decode.customDecoder,$Html$Events.keyCode,is13),function (_p0) {    return A2($Signal.message,address,v);});
+   });
+   var movieImg = function (url) {
+      return _U.eq(url,"N/A") ? A2($Html.span,_U.list([]),_U.list([])) : A2($Html.img,_U.list([$Html$Attributes.src(url)]),_U.list([]));
+   };
+   var movieDiv = function (m) {
+      return A2($Html.div,
+      _U.list([]),
+      _U.list([A2($Html.h2,_U.list([]),_U.list([$Html.text(A2($Basics._op["++"],m.title,A2($Basics._op["++"]," (",A2($Basics._op["++"],m.year,")"))))]))
+              ,movieImg(m.poster)
+              ,A2($Html.p,_U.list([]),_U.list([$Html.text(m.plot)]))]));
+   };
+   var formatMovies = $List.map(function (m) {    return movieDiv(m);});
+   var api = function (title) {
+      return A2($Http.url,"http://omdbapi.com/",_U.list([{ctor: "_Tuple2",_0: "t",_1: title},{ctor: "_Tuple2",_0: "plot",_1: "full"}]));
+   };
+   var emptyMovie = {poster: "",title: "",year: "",plot: ""};
+   var UpdateResults = function (a) {    return {ctor: "UpdateResults",_0: a};};
+   var Search = {ctor: "Search"};
+   var Typing = function (a) {    return {ctor: "Typing",_0: a};};
+   var movieSearch = F2(function (address,m) {
+      return A2($Html.header,
+      _U.list([$Html$Attributes.id("header")]),
+      _U.list([A2($Html.h1,_U.list([]),_U.list([$Html.text("movies")]))
+              ,A2($Html.input,
+              _U.list([$Html$Attributes.id("movie-input")
+                      ,$Html$Attributes.placeholder("Enter a title")
+                      ,$Html$Attributes.autofocus(true)
+                      ,$Html$Attributes.value(m.title)
+                      ,$Html$Attributes.name("movieInput")
+                      ,A3($Html$Events.on,"input",$Html$Events.targetValue,function (_p1) {    return A2($Signal.message,address,Typing(_p1));})
+                      ,A2(onEnter,address,Search)]),
+              _U.list([]))
+              ,A2($Html.button,_U.list([A2($Html$Events.onClick,address,Search)]),_U.list([$Html.text("Go!")]))
+              ,A2($Html.section,_U.list([$Html$Attributes.id("movie_result")]),_U.list([movieDiv(m.result)]))]));
+   });
+   var view = F2(function (address,model) {    return A2(movieSearch,address,model);});
+   var NoOp = {ctor: "NoOp"};
+   var Model = F2(function (a,b) {    return {title: a,result: b};});
+   var Movie = F4(function (a,b,c,d) {    return {title: a,poster: b,year: c,plot: d};});
+   var decodeUrl = A5($Json$Decode.object4,
+   Movie,
+   A2($Json$Decode._op[":="],"Title",$Json$Decode.string),
+   A2($Json$Decode._op[":="],"Poster",$Json$Decode.string),
+   A2($Json$Decode._op[":="],"Year",$Json$Decode.string),
+   A2($Json$Decode._op[":="],"Plot",$Json$Decode.string));
+   var getReqResults = function (title) {    return $Effects.task(A2($Task.map,UpdateResults,$Task.toMaybe(A2($Http.get,decodeUrl,api(title)))));};
+   var init = function (s) {    return {ctor: "_Tuple2",_0: A2(Model,s,emptyMovie),_1: getReqResults(s)};};
+   var update = F2(function (action,m) {
+      var _p2 = action;
+      switch (_p2.ctor)
+      {case "NoOp": return {ctor: "_Tuple2",_0: m,_1: $Effects.none};
+         case "Typing": return {ctor: "_Tuple2",_0: _U.update(m,{title: _p2._0}),_1: $Effects.none};
+         case "Search": return {ctor: "_Tuple2",_0: m,_1: getReqResults(m.title)};
+         default: return {ctor: "_Tuple2",_0: A2(Model,m.title,A2($Maybe.withDefault,m.result,_p2._0)),_1: $Effects.none};}
+   });
+   return _elm.Movies.values = {_op: _op
+                               ,Movie: Movie
+                               ,Model: Model
+                               ,NoOp: NoOp
+                               ,Typing: Typing
+                               ,Search: Search
+                               ,UpdateResults: UpdateResults
+                               ,emptyMovie: emptyMovie
+                               ,init: init
+                               ,update: update
+                               ,getReqResults: getReqResults
+                               ,api: api
+                               ,decodeUrl: decodeUrl
+                               ,movieSearch: movieSearch
+                               ,formatMovies: formatMovies
+                               ,movieDiv: movieDiv
+                               ,movieImg: movieImg
+                               ,onEnter: onEnter
+                               ,is13: is13
+                               ,view: view};
+};
