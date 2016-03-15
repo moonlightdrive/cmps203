@@ -91,3 +91,61 @@ model =
 main : Signal Html
 main =
   Signal.map (view movie.address) model
+
+
+{-
+results : Signal.Mailbox (Result String (List String))
+results =
+  Signal.mailbox (Err "Valid is 5 chars")
+
+port requests : Signal (Task x ())
+port requests =
+  Signal.map lookupMovie movie.signal
+    |> Signal.map (\task -> Task.toResult task `andThen` Signal.send results.address)
+          
+lookupMovie : String -> Task String (List String)
+lookupMovie query =
+  let toUrl = succeed ("http://api.zippopotam.us/us/" ++ query) in
+  toUrl `andThen` (mapError (always "Not Found") << Http.get places)
+
+places : Json.Decoder (List String)        
+places =
+  let place = Json.object2 (\city state -> city ++ ", " ++ state)
+              ("place name" := Json.string)
+              ("state" := Json.string)
+  in "places" := Json.list place
+-}
+
+-- andThen : 
+          {-
+port runner : Task Http.Error ()
+port runner = Http.getString "http://api.ipify.org/" `andThen` \s -> Signal.send movie.address (Result s)
+-}
+
+-- main = Signal.map Graphics.Element.show movie.signal
+
+-- Signal.map : (a -> result) -> Signal a -> Signal result        
+       
+{-
+
+movie : Signal.Mailbox Content
+movie = Signal.mailbox noContent
+
+
+movieField : Signal Element
+movieField =
+  Signal.map (field defaultStyle (Signal.message movie.address) "Movie") movie.signal
+
+
+button : Signal.Mailbox Content
+button = Signal.mailbox noContent
+
+buttonField : Signal Element
+buttonField =
+  Signal.map (field defaultStyle (Signal.message button.address) "Button") button.signal
+
+
+        
+main : Signal Element
+main = Signal.merge buttonField movieField
+-}

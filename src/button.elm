@@ -1,5 +1,6 @@
-import Html exposing (div, button, text)
+import Html exposing (div, button, text, input)
 import Html.Events exposing (onClick)
+import Html.Attributes exposing (..)
 import StartApp.Simple as StartApp
 
 
@@ -12,7 +13,11 @@ model = 0
 
 view address model =
   div []
-    [ button [ onClick address Search ] [ text "Search" ]
+    [ input [ placeholder "Enter Movie Query"
+
+            ]
+        [ ]
+    , button [ onClick address Search ] [text "Search "]
   ]
 
 
