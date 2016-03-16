@@ -59,8 +59,9 @@ view : Model -> Html
 view model =
   div [ class "box" ]
   [ h2 [] [ text "Please click on your favorite image or enter your movie search" ]
-   , img [ alt "Mountain View", src "http://elm-lang.org/imgs/yogi.jpg", attribute "style" "width:304px;height:228px;" ]
+   , img [ alt "Mountain View", src "http://www.puppyheaven.com/media/imagegallery/leonardo-dicaprio-celebrity-gallery-img-2015-12-24-21-28-18.jpg", attribute "style" "width:300px;height:300px;" ]
   [ ]
+  
    , label [ ] [ text "username: " ]
    , div [ attribute "role" "form" ]
     [ div [ class "form-group" ]
