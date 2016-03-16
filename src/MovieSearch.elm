@@ -63,6 +63,8 @@ view model =
   [ ]
   , img [ alt "Actor", src "http://susers.thatsmyface.com/d/dburnsii/Will_Smith_front_cYkveOBguJ-largeThumb_4b67985e.jpg", attribute "style" "width:300px;height:300px;" ]
   [ ]
+  , img [ alt "Actor", src "http://hairstyles.thehairstyler.com/hairstyle_views/front_view_images/1869/original/Matt-Damon.jpg", attribute "style" "width:300px;height:300px;" ]
+  [ ]
   
     , div [  ]
       [ label [ for "Genre" ]
